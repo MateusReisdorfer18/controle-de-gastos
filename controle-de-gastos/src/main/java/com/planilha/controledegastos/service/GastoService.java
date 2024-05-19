@@ -41,6 +41,7 @@ public class GastoService {
         try {
             Gasto gasto = new Gasto();
             BeanUtils.copyProperties(gastoRecordDTO, gasto);
+            gasto.setNumero(this.gerarNumero());
             this.repository.save(gasto);
             return gasto;
         } catch (Exception e) {
@@ -72,5 +73,14 @@ public class GastoService {
             e.printStackTrace();
             return false;
         }
+    }
+
+    private Integer gerarNumero() {
+        List<Gasto> gastos = this.findAll();
+
+        if(gastos.isEmpty())
+            return 1;
+
+        return gastos.size() + 1;
     }
 }

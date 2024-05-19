@@ -18,6 +18,7 @@ public class Gasto {
     @Setter(AccessLevel.NONE)
     private UUID id;
 
+    private Integer numero;
     private String gasto;
     private String local;
     private Integer preco;
