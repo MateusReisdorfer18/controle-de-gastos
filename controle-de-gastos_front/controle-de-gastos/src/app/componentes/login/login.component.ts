@@ -55,8 +55,10 @@ export class LoginComponent {
   }
 
   enviarDados(): void {
-    if(this.tipo === 'entrar')
+    if(this.tipo === 'entrar') {
       this.enviarDadosEntrar();
+      this.limparInputEntrar();
+    }
 
     if(this.tipo === 'cadastro') {
       this.enviarDadosCadastro();
@@ -94,9 +96,11 @@ export class LoginComponent {
       email: this.emailLogin,
       senha: this.senhaLogin
     }
-  
+
     this.service.autenticar(usuario).subscribe(
-      (usuario) => this.onEnviarUsuario.emit(usuario)
+      (usuario) =>  {
+        this.onEnviarUsuario.emit(usuario)
+      }
     );
   }
 

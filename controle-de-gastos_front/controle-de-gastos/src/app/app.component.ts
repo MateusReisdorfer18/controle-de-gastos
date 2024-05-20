@@ -23,7 +23,7 @@ export class AppComponent {
 
   receberUsuario(usuario: IUsuario): void {
     this.usuario = usuario;
-    this.usuarioLogado = !this.usuarioLogado;
+    this.usuarioLogado = true;
     this.login = !this.login;
   }
 }

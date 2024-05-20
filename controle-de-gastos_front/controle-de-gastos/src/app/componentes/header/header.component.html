@@ -20,4 +20,22 @@
             </div>
         </nav>
     </div>
+    <div class="header-logout"
+        [ngClass]="this.abrirMensagemLogout ? 'header-logout_aberto' : 'header-logout_fechado'">
+        <div class="div-mensagem_logout" *ngIf="this.abrirMensagemLogout">
+            <p>Deseja mesmo sair da conta?</p>
+            <div class="logout-button_confirmation">
+                <button
+                    (click)="this.logoutCancelar()">Cancelar</button>
+                <button
+                    (click)="this.logoutConfirmar()">Confirmar</button>
+            </div>
+        </div>
+        <div class="header-logout_button">
+            <button 
+                class="logout-button"
+                (click)="this.logout()">Logout</button>
+        </div>
+    </div>
+    
 </header>
