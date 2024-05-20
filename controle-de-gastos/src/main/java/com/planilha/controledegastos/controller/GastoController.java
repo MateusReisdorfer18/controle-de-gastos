@@ -2,8 +2,10 @@ package com.planilha.controledegastos.controller;
 
 import com.planilha.controledegastos.DTO.GastoRecordDTO;
 import com.planilha.controledegastos.DTO.TipoGastoRecordDTO;
+import com.planilha.controledegastos.DTO.UsuarioAutRecordDTO;
 import com.planilha.controledegastos.entity.Gasto;
 import com.planilha.controledegastos.entity.TipoGasto;
+import com.planilha.controledegastos.entity.Usuario;
 import com.planilha.controledegastos.service.GastoService;
 import com.planilha.controledegastos.service.TipoGastoService;
 import jakarta.validation.Valid;
@@ -16,7 +18,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/gasto")
+@RequestMapping("/controle/gasto")
 public class GastoController {
     @Autowired
     private GastoService service;

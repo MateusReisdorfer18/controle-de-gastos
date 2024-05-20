@@ -1,5 +1,6 @@
 package com.planilha.controledegastos.controller;
 
+import com.planilha.controledegastos.DTO.UsuarioAutRecordDTO;
 import com.planilha.controledegastos.DTO.UsuarioRecordDTO;
 import com.planilha.controledegastos.entity.Usuario;
 import com.planilha.controledegastos.service.UsuarioService;
@@ -13,10 +14,24 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/usuario")
+@RequestMapping("/controle/usuario")
 public class UsuarioController {
     @Autowired
     private UsuarioService service;
+
+    @PostMapping
+    public ResponseEntity<Usuario> autenticar(@RequestBody @Valid UsuarioAutRecordDTO usuarioAutRecordDTO) {
+        try {
+            Usuario usuario = this.service.autenticacao(usuarioAutRecordDTO);
+            if(usuario == null)
+                return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+
+            return new ResponseEntity<>(usuario, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
 
     @GetMapping
     public ResponseEntity<List<Usuario>> findAll() {
@@ -34,7 +49,7 @@ public class UsuarioController {
         try {
             Usuario usuario = this.service.findById(id);
             if(usuario == null)
-                return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
 
             return new ResponseEntity<>(usuario, HttpStatus.OK);
         } catch (Exception e) {
@@ -76,7 +91,7 @@ public class UsuarioController {
         try {
             Boolean returnExcluir = this.service.delete(id);
             if(!returnExcluir)
-                return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>(false, HttpStatus.NOT_FOUND);
 
             return new ResponseEntity<>(returnExcluir, HttpStatus.OK);
         } catch (Exception e) {

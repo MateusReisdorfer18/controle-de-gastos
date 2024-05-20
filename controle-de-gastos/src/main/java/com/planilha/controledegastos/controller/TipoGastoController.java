@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/tipogasto")
+@RequestMapping("/controle/tipogasto")
 public class TipoGastoController {
     @Autowired
     private TipoGastoService service;
