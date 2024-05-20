@@ -1,4 +1,13 @@
-section {
+.section-login {
+    width: 100%;
+    height: 100vh;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.section-main {
     display: flex;
     justify-content: space-between;
     align-items: center;

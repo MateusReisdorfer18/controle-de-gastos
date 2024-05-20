@@ -1,5 +1,14 @@
-<section>
-    <app-header></app-header>
+<section *ngIf="this.login" class="section-login">
+    <app-login 
+        [tipo]="this.telaLogin"
+        (onVoltarHome)="this.voltarHome()"
+        (onEnviarUsuario)="this.receberUsuario($event)"></app-login>
+</section>
+<section *ngIf="!this.login" class="section-main">
+    <app-header 
+        (onAbrirLogin)="this.abrirLogin($event)"
+        [usuarioLogado]="this.usuarioLogado"
+        [usuario]="this.usuario"></app-header>
 
     <div>
         <app-main></app-main>

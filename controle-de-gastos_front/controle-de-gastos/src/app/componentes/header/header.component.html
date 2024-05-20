@@ -1,7 +1,14 @@
 <header>
-    <div class="header-perfil">
+    <div class="header-perfil_logado" *ngIf="this.usuarioLogado">
         <img src="" alt="">
-        <h2>Mateus</h2>
+        <h2>{{ this.usuario.nome }}</h2>
+    </div>
+    <div class="header-perfil_entrar" *ngIf="!this.usuarioLogado">
+        <div>
+            <a (click)="this.abrirLogin('entrar')">Entre</a>
+            <p>ou</p>
+            <a (click)="this.abrirLogin('cadastro')">Cadastre-se</a>
+        </div>
     </div>
     <div class="header-nav">
         <nav>

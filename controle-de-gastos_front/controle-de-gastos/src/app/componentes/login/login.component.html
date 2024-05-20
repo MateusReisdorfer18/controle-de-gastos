@@ -1,0 +1,48 @@
+<form>
+    <div class="login-entrar" *ngIf="this.tipo === 'entrar'">
+        <button 
+            class="button-voltar"
+            (click)="this.voltarHome()">voltar</button>
+        <h2>Login</h2>
+        <div class="div-input">
+            <div class="input">
+                <label for="email-login">Email</label>
+                <input type="email" [(ngModel)]="this.emailLogin" name="email-login" id="email-login" placeholder="Digite o seu email...">
+            </div>
+            <div class="input">
+                <label for="senha-login">Senha</label>
+                <input type="password" [(ngModel)]="this.senhaLogin" name="senha-login" id="senha-login" placeholder="Digite o seu senha...">
+            </div>
+            <button
+                [ngClass]="this.validarBotao() ? 'button-valido' : 'button-invalido'"
+                [disabled]="!this.validarBotao()"
+                (click)="this.enviarDados()">Confirmar</button>
+        </div>
+        <a (click)="this.mudarTela()">Ainda não tem uma conta? Clique aqui e cadastre-se</a>
+    </div>
+    <div class="login-cadastro" *ngIf="this.tipo === 'cadastro'">
+        <button 
+            class="button-voltar"
+            (click)="this.voltarHome()">voltar</button>
+        <h2>Cadastro</h2>
+        <div class="div-input">
+            <div class="input">
+                <label for="nome-cadastro">Nome</label>
+                <input type="text" [(ngModel)]="this.nomeCadastro" name="nome-cadastro" id="nome-cadastro" placeholder="Digite o seu nome...">
+            </div>
+            <div class="input">
+                <label for="email-cadastro">Email</label>
+                <input type="email" [(ngModel)]="this.emailCadastro" name="email-cadastro" id="email-cadastro" placeholder="Digite o seu email...">
+            </div>
+            <div class="input">
+                <label for="senha-cadastro">Senha</label>
+                <input type="password" [(ngModel)]="this.senhaCadastro" name="senha-cadastro" id="senha-cadastro" placeholder="Digite o seu senha...">
+            </div>
+            <button
+                [disabled]="!this.validarBotao()"
+                [ngClass]="this.validarBotao() ? 'button-valido' : 'button-invalido'"
+                (click)="this.enviarDados()">Confirmar</button>
+        </div>
+        <a (click)="this.mudarTela()">Já tem uma conta? Clique aqui para entrar</a>
+    </div>
+</form>
