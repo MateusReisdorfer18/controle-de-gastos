@@ -1,17 +1,35 @@
-<section *ngIf="this.login" class="section-login">
-    <app-login 
-        [tipo]="this.telaLogin"
-        (onVoltarHome)="this.voltarHome()"
-        (onEnviarUsuario)="this.receberUsuario($event)"></app-login>
-</section>
-<section *ngIf="!this.login" class="section-main">
-    <app-header 
-        (onAbrirLogin)="this.abrirLogin($event)"
-        [usuarioLogado]="this.usuarioLogado"
-        [usuario]="this.usuario"></app-header>
+<section>
+    <header class="
+        container-fluid 
+        d-flex 
+        justify-content-between 
+        align-items-center
+        bg-primary">
+        <h1 class="text-light">Controle de Gastos</h1>
+        <p class="text-light">Entre ou Cadastre-se</p>
+    </header>
+    <main class="
+        container-fluid
+        py-3">
+        <div class="row">
+            <app-lista-controle class="col" 
+                [gastos]="this.gastosCasa" 
+                [tipo]="this.tipoCasa.tipo" 
+                (onUpdateStatus)="this.updateStatus($event)"
+                (onDelete)="this.delete($event)"></app-lista-controle>
+            <app-lista-controle class="col" 
+                [gastos]="this.gastosEletronicos" 
+                [tipo]="this.tipoEletronicos.tipo"
+                (onUpdateStatus)="this.updateStatus($event)"
+                (onDelete)="this.delete($event)"></app-lista-controle>
+            <app-lista-controle class="col" 
+                [gastos]="this.gastosFerramentas" 
+                [tipo]="this.tipoFerramentas.tipo"
+                (onUpdateStatus)="this.updateStatus($event)"
+                (onDelete)="this.delete($event)"></app-lista-controle>
+        </div>
+    </main>
+    <footer>
 
-    <div>
-        <app-main></app-main>
-        <app-footer></app-footer>
-    </div>
+    </footer>
 </section>

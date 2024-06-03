@@ -72,8 +72,7 @@
               "buildTarget": "controle-de-gastos:build:production"
             },
             "development": {
-              "buildTarget": "controle-de-gastos:build:development",
-              "proxyConfig": "src/proxy.conf.js"
+              "buildTarget": "controle-de-gastos:build:development"
             }
           },
           "defaultConfiguration": "development"

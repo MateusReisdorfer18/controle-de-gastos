@@ -1,0 +1,18 @@
+.div-card, .div-lista {
+    border: .1rem solid;
+}
+
+.btn-confirm:hover {
+    transition: .2s;
+    background-color: var(--bs-success);
+}
+
+.btn-edit:hover {
+    transition: .2s;
+    background-color: var(--bs-warning);
+}
+
+.btn-delete:hover {
+    transition: .2s;
+    background-color: var(--bs-danger);
+}

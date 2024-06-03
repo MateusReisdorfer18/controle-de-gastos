@@ -1,5 +1,8 @@
-import { Component, EventEmitter, Output } from '@angular/core';
-import { IUsuario } from './componentes/login/model/IUsuario';
+import { Component, OnChanges, SimpleChanges } from '@angular/core';
+import { GastoService } from './modal/gasto/gasto.service';
+import { IGasto } from './modal/gasto/IGasto';
+import { ITipoGasto } from './modal/tipoGasto/ITipoGasto';
+import { TipoGastoService } from './modal/tipoGasto/tipo-gasto.service';
 
 @Component({
   selector: 'app-root',
@@ -7,23 +10,58 @@ import { IUsuario } from './componentes/login/model/IUsuario';
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  login: boolean = false;
-  telaLogin!: String;
-  usuario!: IUsuario;
-  usuarioLogado: boolean = false;
 
-  abrirLogin(tipo: String): void {
-    this.telaLogin = tipo;
-    this.login = !this.login;
+  gastosCasa: IGasto[] = [];
+  gastosFerramentas: IGasto[] = [];
+  gastosEletronicos: IGasto[] = [];
+  tipoCasa!: ITipoGasto;
+  tipoFerramentas!: ITipoGasto;
+  tipoEletronicos!: ITipoGasto;
+
+  constructor(private gastoService: GastoService, private tipoGastoService: TipoGastoService) {
+    this.findAll();
+    this.popularTipos();
   }
 
-  voltarHome(): void {
-    this.login = !this.login;
+  findAll(): void {
+    this.gastoService.getAll().subscribe((gastos) => {
+      this.popularListas(gastos);
+    });
   }
 
-  receberUsuario(usuario: IUsuario): void {
-    this.usuario = usuario;
-    this.usuarioLogado = true;
-    this.login = !this.login;
+  updateStatus(id: String): void {
+    this.gastoService.updateStatus(id).subscribe();
+  }
+
+  delete(id: String): void {
+    this.gastoService.delete(id).subscribe();
+  }
+
+  private popularListas(gastos: IGasto[]): void {
+    gastos.forEach((gasto) => {
+      if(gasto.tipo.tipo === "casa")
+        this.gastosCasa.push(gasto);
+
+      if(gasto.tipo.tipo === "ferramentas")
+        this.gastosFerramentas.push(gasto);
+
+      if(gasto.tipo.tipo === "eletronicos")
+        this.gastosEletronicos.push(gasto);
+    })
+  }
+
+  private popularTipos(): void {
+    this.tipoGastoService.getByTipo("ferramentas").subscribe((tipoGasto) => {
+      this.tipoFerramentas = tipoGasto;
+    });
+
+    this.tipoGastoService.getByTipo("eletronicos").subscribe((tipoGasto) => {
+      this.tipoEletronicos = tipoGasto;
+    });
+
+    this.tipoGastoService.getByTipo("casa").subscribe((tipoGasto) => {
+      this.tipoCasa = tipoGasto;
+    });
   }
 }
+
