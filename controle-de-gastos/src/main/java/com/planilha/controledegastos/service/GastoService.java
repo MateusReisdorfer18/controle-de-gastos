@@ -65,6 +65,15 @@ public class GastoService {
         }
     }
 
+    public Boolean updateStatus(UUID id) {
+        Gasto gasto = this.findById(id);
+        if(gasto == null)
+            return false;
+
+        this.repository.updateStatus(id);
+        return true;
+    }
+
     public Boolean delete(UUID id) {
         try {
             this.repository.deleteById(id);

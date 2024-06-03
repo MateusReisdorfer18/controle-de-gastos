@@ -10,10 +10,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/controle/tipogasto")
+@RequestMapping("/tipo-gasto")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class TipoGastoController {
     @Autowired
     private TipoGastoService service;
@@ -41,6 +43,15 @@ public class TipoGastoController {
             e.printStackTrace();
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @GetMapping("/tipo/{tipo}")
+    public ResponseEntity<TipoGasto> findByTipo(@PathVariable("tipo") String tipo) {
+        TipoGasto tipoGasto = this.service.findByTipo(tipo);
+        if(tipoGasto == null)
+            return ResponseEntity.notFound().build();
+
+        return ResponseEntity.ok(tipoGasto);
     }
 
     @PostMapping("/cadastrar")

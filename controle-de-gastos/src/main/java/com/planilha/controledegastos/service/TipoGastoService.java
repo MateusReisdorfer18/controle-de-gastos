@@ -25,6 +25,10 @@ public class TipoGastoService {
         }
     }
 
+    public TipoGasto findByTipo(String tipo) {
+        return this.repository.findByTipo(tipo);
+    }
+
     public TipoGasto findById(UUID id) {
         try {
             Optional<TipoGasto> tipo = this.repository.findById(id);

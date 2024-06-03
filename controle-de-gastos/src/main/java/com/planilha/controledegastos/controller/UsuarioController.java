@@ -14,7 +14,8 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/controle/usuario")
+@RequestMapping("/usuario")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class UsuarioController {
     @Autowired
     private UsuarioService service;

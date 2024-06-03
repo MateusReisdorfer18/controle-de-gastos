@@ -18,7 +18,8 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/controle/gasto")
+@RequestMapping("/gasto")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class GastoController {
     @Autowired
     private GastoService service;
@@ -74,6 +75,15 @@ public class GastoController {
             e.printStackTrace();
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @PatchMapping("/alterar/status/{id}")
+    public ResponseEntity<Boolean> updateStatus(@PathVariable("id") UUID id) {
+        Boolean returnUpdateStatus = this.service.updateStatus(id);
+        if(!returnUpdateStatus)
+            return ResponseEntity.notFound().build();
+
+        return ResponseEntity.ok(true);
     }
 
     @DeleteMapping("/excluir/{id}")
