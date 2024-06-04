@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { IGasto } from './IGasto';
+import { GastoDTO } from './GastoDTO';
 
 @Injectable({
   providedIn: 'root'
@@ -19,11 +20,11 @@ export class GastoService {
     return this.http.get<IGasto>(`${this.URL}/${id}`);
   }
 
-  create(gasto: IGasto): Observable<IGasto> {
+  create(gasto: GastoDTO): Observable<IGasto> {
     return this.http.post<IGasto>(`${this.URL}/cadastrar`, gasto);
   }
 
-  alter(gasto: IGasto, id: String): Observable<IGasto> {
+  alter(gasto: GastoDTO, id: String): Observable<IGasto> {
     return this.http.put<IGasto>(`${this.URL}/alterar/${id}`, gasto);
   }
 

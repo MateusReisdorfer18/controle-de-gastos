@@ -1,7 +1,41 @@
-<div class="div-lista p-3 rounded overflow-auto h-50">
+<div class="div-lista p-3 rounded overflow-auto">
     <div class="div-title d-flex justify-content-between align-items-center">
-        <h2>{{ tipo }}</h2>
-        <button class="btn btn-primary px-4">+</button>
+        <h2>{{ tipo.tipo }}</h2>
+        <button class="btn btn-primary px-4"
+            (click)="this.abrirCadastro()"
+            *ngIf="!this.cadastrarGasto">+</button>
+        <div *ngIf="this.cadastrarGasto">
+            <button class="btn btn-success px-4"
+                (click)="this.create()">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-check-circle" viewBox="0 0 16 16">
+                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                                <path
+                                    d="m10.97 4.97-.02.022-3.473 4.425-2.093-2.094a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05" />
+                </svg>
+            </button>    
+            <button class="btn btn-danger ms-1" 
+                (click)="this.fecharCadastro()">Cancelar</button>
+        </div>    
+    </div>
+    <div *ngIf="this.cadastrarGasto"
+        class="div-cadastro d-flex flex-wrap align-items-start">
+        <div class="div-input d-flex flex-column col-6">
+            <label for="gasto">Gasto</label>
+            <input type="text" id="gasto" [(ngModel)]="this.gastoDTO.gasto">
+        </div>
+        <div class="div-input d-flex flex-column col-6">
+            <label for="local">Local</label>
+            <input type="text" id="local" [(ngModel)]="this.gastoDTO.local">
+        </div>
+        <div class="div-input d-flex flex-column col-6">
+            <label for="preco">Preço</label>
+            <input type="text" placeholder="R$ 0,00" id="preco" [(ngModel)]="this.gastoDTO.preco">
+        </div>
+        <div class="div-input d-flex flex-column col-6">
+            <label for="tipo">Tipo</label>
+            <input type="text" [value]=tipo.tipo disabled id="tipo">
+        </div>
     </div>
     <div class="div-card my-2 p-3 rounded" *ngFor="let gasto of gastos">
         <div class="d-flex justify-content-between align-items-center">
@@ -9,9 +43,9 @@
             <p *ngIf="gasto.status">Pago</p>
             <p *ngIf="!gasto.status">Em aberto</p>
         </div>
-        <div class="d-flex justify-content-around align-items-center">
-            <div class="w-50">
-                <ul class="list-group list-group-flush">
+        <div class="div-gasto d-flex justify-content-around align-items-center">
+            <div class="div-lista-gasto w-50 overflow-auto">
+                <ul class="list-group list-group-flush" *ngIf="!this.editarGasto">
                     <li class="list-group-item">
                         <p>Gasto: {{ gasto.gasto }}</p>
                     </li>
@@ -25,11 +59,30 @@
                         <p>Tipo: {{ gasto.tipo.tipo }}</p>
                     </li>
                 </ul>
+                <ul class="list-group list-group-flush lista-gasto-editar" *ngIf="this.editarGasto">
+                    <li class="list-group-item">
+                        <label for="gasto-editar">Gasto</label>
+                        <input type="text" id="gasto-editar" [value]="gasto.gasto" [(ngModel)]="gasto.gasto">
+                    </li>
+                    <li class="list-group-item">
+                        <label for="local-editar">Local</label>
+                        <input type="text" id="local-editar" [value]="gasto.local" [(ngModel)]="gasto.local">
+                    </li>
+                    <li class="list-group-item">
+                        <label for="preco-editar">Preco</label>
+                        <input type="text" id="preco-editar" [value]="gasto.preco" [(ngModel)]="gasto.preco">
+                    </li>
+                    <li class="list-group-item">
+                        <label for="tipo-editar">Tipo</label>
+                        <input type="text" id="tipo-editar" disabled [value]="gasto.tipo.tipo">
+                    </li>
+                </ul>
             </div>
             <div class="div-left d-flex justify-content-around flex-column w-50">
                 <div class="d-flex justify-content-around">
                     <button class="btn-confirm col-3 border-0 py-2 rounded"
-                        (click)="this.updateStatus(gasto.id)">
+                        (click)="this.updateStatus(gasto.id, gasto.status)"
+                        *ngIf="!this.editarGasto">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                             class="bi bi-check-circle" viewBox="0 0 16 16">
                             <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
@@ -37,7 +90,18 @@
                                 d="m10.97 4.97-.02.022-3.473 4.425-2.093-2.094a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05" />
                         </svg>
                     </button>
-                    <button class="btn-edit col-3 border-0 py-2 rounded">
+                    <button class="btn-confirm col-3 border-0 py-2 rounded"
+                        (click)="this.alter(gasto, gasto.id)"
+                        *ngIf="this.editarGasto">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="bi bi-check-circle" viewBox="0 0 16 16">
+                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                            <path
+                                d="m10.97 4.97-.02.022-3.473 4.425-2.093-2.094a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05" />
+                        </svg>
+                    </button>
+                    <button class="btn-edit col-3 border-0 py-2 rounded"
+                        (click)="this.abrirEditar()">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                             class="bi bi-pencil" viewBox="0 0 16 16">
                             <path

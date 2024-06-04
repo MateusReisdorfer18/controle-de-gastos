@@ -2,6 +2,40 @@
     border: .1rem solid;
 }
 
+.div-lista {
+    max-height: 80vh;
+
+    .div-card {
+
+        .div-gasto {
+
+            .div-lista-gasto {
+                height: 17rem;
+
+                .lista-gasto-editar {
+                    input {
+                        width: 100%;
+                    }
+                }
+            }
+
+        }
+    }
+
+    .div-cadastro {
+        
+        .div-input {
+            input {
+                max-width: 100%;
+            }
+        }
+
+        .div-input:nth-child(even) {
+            padding-left: .5rem;
+        }
+    }
+}
+
 .btn-confirm:hover {
     transition: .2s;
     background-color: var(--bs-success);

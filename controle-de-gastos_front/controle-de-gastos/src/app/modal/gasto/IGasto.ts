@@ -7,9 +7,6 @@ export interface IGasto {
     local: String,
     preco: Number,
     dataCriacao: Date,
-    diaCriacao: Number,
-    mesCriacao: Number,
-    anoCriacao: Number,
     dataModificao: Date,
     tipo: ITipoGasto,
     status: Boolean
