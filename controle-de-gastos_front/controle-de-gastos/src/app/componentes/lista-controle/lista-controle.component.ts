@@ -20,7 +20,9 @@ export class ListaControleComponent {
   gastoDTO: GastoDTO = new GastoDTO();
 
   constructor() {
-    console.log(this.tipo);
+    this.gastos.forEach((gasto) => {
+      console.log(gasto.dataCriacao);
+    })
   }
 
   abrirCadastro(): void {
@@ -43,22 +45,24 @@ export class ListaControleComponent {
     this.gastoDTO.tipo = this.tipo;
     this.onCreate.emit(this.gastoDTO);
     this.fecharCadastro();
+    this.limparInput();
   }
 
-  alter(gasto: GastoDTO, id: String): void {
-    gasto.id = id;
+  alter(gasto: GastoDTO): void {
     this.onAlter.emit(gasto);
-    this.fecharEditar();
   }
 
-  updateStatus(id: String, status: Boolean): void {
-    if(status)
-      return;
-    
+  updateStatus(id: String): void {
     this.onUpdateStatus.emit(id);
   }
 
   delete(id: String): void {
     this.onDelete.emit(id);
+  }
+
+  private limparInput(): void {
+    this.gastoDTO.gasto = '';
+    this.gastoDTO.local = '';
+    this.gastoDTO.preco = 0;
   }
 }
