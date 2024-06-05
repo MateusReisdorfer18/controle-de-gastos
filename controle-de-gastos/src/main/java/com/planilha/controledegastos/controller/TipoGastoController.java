@@ -1,6 +1,5 @@
 package com.planilha.controledegastos.controller;
 
-import com.planilha.controledegastos.DTO.TipoGastoRecordDTO;
 import com.planilha.controledegastos.entity.TipoGasto;
 import com.planilha.controledegastos.service.TipoGastoService;
 import jakarta.validation.Valid;
@@ -10,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -22,27 +20,17 @@ public class TipoGastoController {
 
     @GetMapping
     public ResponseEntity<List<TipoGasto>> findAll() {
-        try {
-            List<TipoGasto> tipos = this.service.findAll();
-            return new ResponseEntity<>(tipos, HttpStatus.OK);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        }
+        List<TipoGasto> tipos = this.service.findAll();
+        return ResponseEntity.ok(tipos);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<TipoGasto> findById(@PathVariable("id") UUID id) {
-        try {
-            TipoGasto tipo = this.service.findById(id);
-            if(tipo == null)
-                return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        TipoGasto tipo = this.service.findById(id);
+        if (tipo == null)
+            return ResponseEntity.notFound().build();
 
-            return new ResponseEntity<>(tipo, HttpStatus.OK);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        }
+        return ResponseEntity.ok(tipo);
     }
 
     @GetMapping("/tipo/{tipo}")
@@ -55,44 +43,29 @@ public class TipoGastoController {
     }
 
     @PostMapping("/cadastrar")
-    public ResponseEntity<TipoGasto> create(@RequestBody @Valid TipoGastoRecordDTO tipoGastoRecordDTO) {
-        try {
-            TipoGasto tipo = this.service.create(tipoGastoRecordDTO);
-            if(tipo == null)
-                return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+    public ResponseEntity<TipoGasto> create(@RequestBody @Valid TipoGasto tipoGasto) {
+        TipoGasto tipo = this.service.create(tipoGasto);
+        if(tipo == null)
+            return ResponseEntity.badRequest().build();
 
-            return new ResponseEntity<>(tipo, HttpStatus.CREATED);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        }
+        return new ResponseEntity<>(tipo, HttpStatus.CREATED);
     }
 
     @PutMapping("/alterar/{id}")
-    public ResponseEntity<TipoGasto> alter(@RequestBody @Valid TipoGastoRecordDTO tipoGastoRecordDTO, @PathVariable("id") UUID id) {
-        try {
-            TipoGasto tipo = this.service.alter(tipoGastoRecordDTO, id);
-            if(tipo == null)
-                return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+    public ResponseEntity<TipoGasto> alter(@RequestBody @Valid TipoGasto tipoGasto, @PathVariable("id") UUID id) {
+        TipoGasto tipo = this.service.alter(tipoGasto, id);
+        if(tipo == null)
+            return ResponseEntity.notFound().build();
 
-            return new ResponseEntity<>(tipo, HttpStatus.OK);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        }
+        return ResponseEntity.ok(tipo);
     }
 
     @DeleteMapping("/excluir/{id}")
     public ResponseEntity<Boolean> delete(@PathVariable("id") UUID id) {
-        try {
-            Boolean returnExcluir = this.service.delete(id);
-            if(!returnExcluir)
-                return new ResponseEntity<>(returnExcluir, HttpStatus.BAD_REQUEST);
+        Boolean returnExcluir = this.service.delete(id);
+        if(!returnExcluir)
+            return ResponseEntity.notFound().build();
 
-            return new ResponseEntity<>(returnExcluir, HttpStatus.OK);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
-        }
+        return ResponseEntity.ok(true);
     }
 }

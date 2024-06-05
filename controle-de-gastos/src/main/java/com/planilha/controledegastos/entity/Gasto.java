@@ -1,8 +1,12 @@
 package com.planilha.controledegastos.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
+import java.sql.Date;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -19,13 +23,18 @@ public class Gasto {
     private UUID id;
 
     private Integer numero;
+
+    @NotBlank
     private String gasto;
+    @NotBlank
     private String local;
-    private Integer preco;
-    private LocalDateTime dataCriacao = LocalDateTime.now();
-    private LocalDateTime dataModificacao;
+    @NotNull
+    private Double preco;
+    private Date dataCriacao = Date.valueOf(LocalDate.now());
+    private LocalDate dataModificacao;
     private Boolean status = false;
 
     @ManyToOne
+    @NotNull
     private TipoGasto tipo;
 }

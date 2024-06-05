@@ -1,13 +1,7 @@
 package com.planilha.controledegastos.controller;
 
-import com.planilha.controledegastos.DTO.GastoRecordDTO;
-import com.planilha.controledegastos.DTO.TipoGastoRecordDTO;
-import com.planilha.controledegastos.DTO.UsuarioAutRecordDTO;
 import com.planilha.controledegastos.entity.Gasto;
-import com.planilha.controledegastos.entity.TipoGasto;
-import com.planilha.controledegastos.entity.Usuario;
 import com.planilha.controledegastos.service.GastoService;
-import com.planilha.controledegastos.service.TipoGastoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,55 +20,35 @@ public class GastoController {
 
     @GetMapping
     public ResponseEntity<List<Gasto>> findAll() {
-        try {
-            List<Gasto> gasto = this.service.findAll();
-            return new ResponseEntity<>(gasto, HttpStatus.OK);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        }
+        List<Gasto> gasto = this.service.findAll();
+        return ResponseEntity.ok(gasto);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Gasto> findById(@PathVariable("id") UUID id) {
-        try {
-            Gasto gasto = this.service.findById(id);
-            if(gasto == null)
-                return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        Gasto gasto = this.service.findById(id);
+        if(gasto == null)
+            ResponseEntity.notFound().build();
 
-            return new ResponseEntity<>(gasto, HttpStatus.OK);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        }
+        return ResponseEntity.ok(gasto);
     }
 
     @PostMapping("/cadastrar")
-    public ResponseEntity<Gasto> create(@RequestBody @Valid GastoRecordDTO gastoRecordDTO) {
-        try {
-            Gasto gasto = this.service.create(gastoRecordDTO);
-            if(gasto == null)
-                return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+    public ResponseEntity<Gasto> create(@RequestBody @Valid Gasto gasto) {
+        Gasto gastoCriado = this.service.create(gasto);
+        if(gastoCriado == null)
+            return ResponseEntity.badRequest().build();
 
-            return new ResponseEntity<>(gasto, HttpStatus.CREATED);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        }
+        return new ResponseEntity<>(gastoCriado, HttpStatus.CREATED);
     }
 
     @PutMapping("/alterar/{id}")
-    public ResponseEntity<Gasto> alter(@RequestBody @Valid GastoRecordDTO gastoRecordDTO, @PathVariable("id") UUID id) {
-        try {
-            Gasto gasto = this.service.alter(gastoRecordDTO, id);
-            if(gasto == null)
-                return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+    public ResponseEntity<Gasto> alter(@RequestBody @Valid Gasto gasto, @PathVariable("id") UUID id) {
+        Gasto gastoAlterado = this.service.alter(gasto, id);
+        if(gastoAlterado == null)
+            return ResponseEntity.notFound().build();
 
-            return new ResponseEntity<>(gasto, HttpStatus.OK);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        }
+        return ResponseEntity.ok(gastoAlterado);
     }
 
     @PatchMapping("/alterar/status/{id}")
@@ -88,15 +62,10 @@ public class GastoController {
 
     @DeleteMapping("/excluir/{id}")
     public ResponseEntity<Boolean> delete(@PathVariable("id") UUID id) {
-        try {
-            Boolean returnExcluir = this.service.delete(id);
-            if(!returnExcluir)
-                return new ResponseEntity<>(returnExcluir, HttpStatus.BAD_REQUEST);
+        Boolean returnExcluir = this.service.delete(id);
+        if(!returnExcluir)
+            return ResponseEntity.notFound().build();
 
-            return new ResponseEntity<>(returnExcluir, HttpStatus.OK);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
-        }
+        return ResponseEntity.ok(true);
     }
 }

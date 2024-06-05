@@ -1,6 +1,7 @@
 package com.planilha.controledegastos.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 import java.util.UUID;
@@ -17,5 +18,6 @@ public class TipoGasto {
     @Setter(AccessLevel.NONE)
     private UUID id;
 
+    @NotBlank
     private String tipo;
 }
