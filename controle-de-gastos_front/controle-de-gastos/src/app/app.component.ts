@@ -55,14 +55,20 @@ export class AppComponent {
 
   private popularListas(gastos: IGasto[]): void {
     gastos.forEach((gasto) => {
-      if(gasto.tipo.tipo === "Casa")
+      if(gasto.tipo.tipo === "Casa") {
+        gasto.dataCriacao = new Date(gasto.dataCriacao);
         this.gastosCasa.push(gasto);
+      }
 
-      if(gasto.tipo.tipo === "Mercado")
+      if(gasto.tipo.tipo === "Mercado") {
+        gasto.dataCriacao = new Date(gasto.dataCriacao);
         this.gastosMercado.push(gasto);
+      }
 
-      if(gasto.tipo.tipo === "Outros")
+      if(gasto.tipo.tipo === "Outros") {
+        gasto.dataCriacao = new Date(gasto.dataCriacao);
         this.gastosOutros.push(gasto);
+      }
     })
   }
 

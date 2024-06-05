@@ -86,6 +86,6 @@
                   </svg>
             </button>
         </div>
-        <p class="text-center pt-5">{{ gasto.dataCriacao }}</p>
+        <p class="text-center pt-5">{{ gasto.dataCriacao.getDate() + 1 }}/{{ gasto.dataCriacao.getMonth() + 1 }}/{{ gasto.dataCriacao.getFullYear() }}</p>
     </div>
 </div>

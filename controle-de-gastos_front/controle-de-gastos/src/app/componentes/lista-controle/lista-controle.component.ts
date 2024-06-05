@@ -11,19 +11,18 @@ import { GastoDTO } from '../../modal/gasto/GastoDTO';
 export class ListaControleComponent {
   @Input() gastos: IGasto[] = [];
   @Input() tipo!: ITipoGasto;
+  @Output() onFindAll = new EventEmitter();
   @Output() onUpdateStatus = new EventEmitter();
   @Output() onDelete = new EventEmitter();
   @Output() onCreate = new EventEmitter();
   @Output() onAlter = new EventEmitter();
+  gastoDTO: GastoDTO = new GastoDTO();
+  gastosFiltrados!: IGasto[];
+  tipoFiltro!: String;
+  dataFiltro!: String;
   cadastrarGasto: Boolean = false;
   editarGasto: Boolean = false;
-  gastoDTO: GastoDTO = new GastoDTO();
-
-  constructor() {
-    this.gastos.forEach((gasto) => {
-      console.log(gasto.dataCriacao);
-    })
-  }
+  filtrarGastos: Boolean = false; 
 
   abrirCadastro(): void {
     this.cadastrarGasto = true;
@@ -33,12 +32,87 @@ export class ListaControleComponent {
     this.editarGasto = true;
   }
 
-  fecharEditar(): void {
-    this.editarGasto = false;
+  abrirFiltros(): void {
+    this.filtrarGastos = true;
   }
 
   fecharCadastro(): void {
     this.cadastrarGasto = false;
+    this.fecharFiltros();
+  }
+
+  fecharEditar(): void {
+    this.editarGasto = false;
+  }
+
+  fecharFiltros(): void {
+    this.filtrarGastos = false;
+    this.dataFiltro = '';
+    this.tipoFiltro = '';
+  }
+
+  findAll(): void {
+    this.onFindAll.emit();
+    this.fecharFiltros();
+  }
+
+  filtrar(): void {
+    const tipoFiltro: Number = Number(this.tipoFiltro);
+    const dataFiltro: Number = Number(this.dataFiltro);
+
+    this.gastos = this.filtro(tipoFiltro, dataFiltro);
+
+    this.fecharFiltros();
+  }
+
+  private filtro(tipoFiltro: Number, dataFiltro: Number): IGasto[] {
+    let gastosFiltrados: IGasto[] = [];
+
+    this.gastos.forEach((gasto) => {
+      if(tipoFiltro === 1) {
+       const returnGasto: IGasto | null = this.filtroDia(dataFiltro, gasto); 
+
+       if(returnGasto)
+        gastosFiltrados.push(gasto);
+      }
+
+      if(tipoFiltro === 2) {
+        const returnGasto: IGasto | null = this.filtroMes(dataFiltro, gasto);
+
+        if(returnGasto)
+          gastosFiltrados.push(gasto);
+      }
+
+      if(tipoFiltro === 3) {
+        const returnGasto: IGasto | null = this.filtroAno(dataFiltro, gasto);
+
+        if(returnGasto)
+          gastosFiltrados.push(gasto);
+      }
+    });
+
+    return gastosFiltrados;
+  }
+
+  private filtroDia(dataFiltro: Number, gasto: IGasto): IGasto | null {
+    if((gasto.dataCriacao.getDate() + 1) === dataFiltro)
+      return gasto;
+
+    return null;
+  }
+
+  private filtroMes(dataFiltro: Number, gasto: IGasto): IGasto | null {
+    if((gasto.dataCriacao.getMonth() + 1) === dataFiltro)
+      return gasto;
+
+    return null;
+  }
+
+  private filtroAno(dataFiltro: Number, gasto: IGasto): IGasto | null {
+    if(gasto.dataCriacao.getFullYear() === dataFiltro)
+      return gasto;
+
+    return null;
   }
 
   create(): void {

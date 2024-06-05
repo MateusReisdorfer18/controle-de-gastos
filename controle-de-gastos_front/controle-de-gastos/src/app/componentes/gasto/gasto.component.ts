@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { IGasto } from '../../modal/gasto/IGasto';
 import { GastoDTO } from '../../modal/gasto/GastoDTO';
 
